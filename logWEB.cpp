@@ -38,6 +38,11 @@ int main()
         res.set_content("Hello World!", "text/plain");
     });
 
+    svr.Get("/packets", [&](const httplib::Request&, httplib::Response& res) {
+        q.display();
+        res.set_content("Hello World!", "text/plain");
+    });
+
     svr.listen("0.0.0.0", 9074);
 
 

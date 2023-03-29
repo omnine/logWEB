@@ -1,19 +1,17 @@
 #include <iostream>
+#include <vector>
 using namespace std;
 
 class FixedCapacityQueue {
 private:
     int front, rear;
     int capacity;
-    int* queue;
+    vector<int> queue;
 public:
     FixedCapacityQueue(int size) {
         front = rear = -1;
         capacity = size;
-        queue = new int[capacity];
-    }
-    ~FixedCapacityQueue() {
-        delete[] queue;
+        queue.resize(capacity);
     }
     void enqueue(int item) {
         if ((front == 0 && rear == capacity - 1) || (rear == front - 1)) {
@@ -71,3 +69,4 @@ public:
         cout << endl;
     }
 };
+
