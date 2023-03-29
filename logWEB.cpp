@@ -5,9 +5,25 @@
 
 #include "httplib.h"
 
+#include "LogCollector.h"
+
 int main()
 {
     std::cout << "Hello World!\n";
+
+    FixedCapacityQueue q(5);
+    q.enqueue(10);
+    q.enqueue(20);
+    q.enqueue(30);
+    q.enqueue(40);
+    q.enqueue(50);
+    q.enqueue(60);
+    q.dequeue();
+    q.enqueue(70);
+    q.dequeue();
+    q.enqueue(80);
+    q.display();
+
 
     // HTTP
     httplib::Server svr;
