@@ -11,7 +11,7 @@ int main()
 {
     std::cout << "Hello World!\n";
 
-    FixedCapacityQueue q(5);
+    LogCollector q(5);
     q.enqueue(10);
     q.enqueue(20);
     q.enqueue(30);

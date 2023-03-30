@@ -4,7 +4,8 @@
 
 using namespace std;
 
-class FixedCapacityQueue {
+// A circular buffer queue, fixed capacity
+class LogCollector {
 private:
     int front, rear;
     int capacity;
@@ -14,7 +15,7 @@ private:
     std::mutex mutex_;
 
 public:
-    FixedCapacityQueue(int size) {
+    LogCollector(int size) {
         front = rear = -1;
         capacity = size;
         queue.resize(capacity);
@@ -83,5 +84,41 @@ public:
         }
         cout << endl;
     }
+
+private:
+    // If  json library is used, then it is not necessary.
+    std::string escape_string(const std::string& str) {
+        std::string escaped_str;
+        for (char c : str) {
+            switch (c) {
+            case '\\':
+                escaped_str += "\\\\";
+                break;
+            case '"':
+                escaped_str += "\\\"";
+                break;
+            case '\b':
+                escaped_str += "\\b";
+                break;
+            case '\f':
+                escaped_str += "\\f";
+                break;
+            case '\n':
+                escaped_str += "\\n";
+                break;
+            case '\r':
+                escaped_str += "\\r";
+                break;
+            case '\t':
+                escaped_str += "\\t";
+                break;
+            default:
+                escaped_str += c;
+                break;
+            }
+        }
+        return escaped_str;
+    }
+
 };
 
