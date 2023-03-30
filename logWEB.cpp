@@ -39,6 +39,7 @@ int main()
     });
 
     svr.Get("/packets", [&](const httplib::Request&, httplib::Response& res) {
+        // using chunk provider to transfer large buffer?
         q.display();
         res.set_content("Hello World!", "text/plain");
     });

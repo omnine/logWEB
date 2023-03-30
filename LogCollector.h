@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <mutex>
+
 using namespace std;
 
 class FixedCapacityQueue {
@@ -7,13 +9,25 @@ private:
     int front, rear;
     int capacity;
     vector<int> queue;
+
+    bool pause_;
+    std::mutex mutex_;
+
 public:
     FixedCapacityQueue(int size) {
         front = rear = -1;
         capacity = size;
         queue.resize(capacity);
+        pause_ = false;
     }
+
     void enqueue(int item) {
+        if (pause_)
+            return;
+
+        // Lock the mutex to protect access to the shared variable
+        std::lock_guard<std::mutex> lock(mutex_);
+
         if ((front == 0 && rear == capacity - 1) || (rear == front - 1)) {
             cout << "Queue is full. Removing oldest record.\n";
             dequeue();
@@ -48,6 +62,7 @@ public:
         }
     }
     void display() {
+        pause_ = true;
         if (front == -1) {
             cout << "Queue is empty.\n";
             return;
