@@ -85,6 +85,33 @@ public:
         cout << endl;
     }
 
+    void fetch(std::vector<int>& bucket) {
+        pause_ = true;
+        if (front == -1) {
+ //           cout << "Queue is empty.\n";
+            return;
+        }
+        cout << "Elements in the queue are: ";
+        if (rear >= front) {
+            for (int i = front; i <= rear; i++) {
+                bucket.push_back(queue[i]);
+ //               cout << queue[i] << " ";
+            }
+        }
+        else {
+            for (int i = front; i < capacity; i++) {
+                bucket.push_back(queue[i]);
+//                cout << queue[i] << " ";
+            }
+            for (int i = 0; i <= rear; i++) {
+                bucket.push_back(queue[i]);
+//                cout << queue[i] << " ";
+            }
+        }
+        cout << endl;
+    }
+
+
 private:
     // If  json library is used, then it is not necessary.
     std::string escape_string(const std::string& str) {

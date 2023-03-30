@@ -40,8 +40,22 @@ int main()
 
     svr.Get("/packets", [&](const httplib::Request&, httplib::Response& res) {
         // using chunk provider to transfer large buffer?
-        q.display();
-        res.set_content("Hello World!", "text/plain");
+        std::vector<int> bucket;
+        q.fetch(bucket);
+        res.set_chunked_content_provider(
+            "text/plain",
+            [&](size_t offset, httplib::DataSink& sink) {
+            for (int i = 0; i < bucket.size(); i++)
+            {
+                sink.write("123", 3);
+            }
+            sink.done(); // No more data
+            return true; // return 'false' if you want to cancel the process.
+        }
+        );
+
+
+//        res.set_content("Hello World!", "text/plain");
     });
 
     svr.listen("0.0.0.0", 9074);
