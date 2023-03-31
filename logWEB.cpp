@@ -29,7 +29,7 @@ int main()
     httplib::Server svr;
 
     // Mount /public to ./www directory
-    auto ret = svr.set_mount_point("/livelog", "./www");
+    auto ret = svr.set_mount_point("/home", "./www");
     if (!ret) {
         // The specified base directory doesn't exist...
     }
