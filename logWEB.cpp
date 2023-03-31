@@ -43,12 +43,14 @@ int main()
         std::vector<string> bucket;
         q.fetch(bucket);
         res.set_chunked_content_provider(
-            "text/plain",
+            "text/html",
             [bucket](size_t offset, httplib::DataSink& sink) {
             for (int i = 0; i < bucket.size(); i++)
             {
                 string message = bucket[i];
+                sink.write("<p>", 3);
                 sink.write(message.c_str(), message.size());
+                sink.write("</p>", 4);
             }
             sink.done(); // No more data
             return true; // return 'false' if you want to cancel the process.
