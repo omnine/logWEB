@@ -12,16 +12,16 @@ int main()
     std::cout << "Hello World!\n";
 
     LogCollector q(5);
-    q.enqueue(10);
-    q.enqueue(20);
-    q.enqueue(30);
-    q.enqueue(40);
-    q.enqueue(50);
-    q.enqueue(60);
+    q.enqueue("10");
+    q.enqueue("20");
+    q.enqueue("30");
+    q.enqueue("40");
+    q.enqueue("50");
+    q.enqueue("60");
     q.dequeue();
-    q.enqueue(70);
+    q.enqueue("70");
     q.dequeue();
-    q.enqueue(80);
+    q.enqueue("80");
     q.display();
 
 
@@ -40,14 +40,15 @@ int main()
 
     svr.Get("/packets", [&](const httplib::Request&, httplib::Response& res) {
         // using chunk provider to transfer large buffer?
-        std::vector<int> bucket;
+        std::vector<string> bucket;
         q.fetch(bucket);
         res.set_chunked_content_provider(
             "text/plain",
-            [&](size_t offset, httplib::DataSink& sink) {
+            [bucket](size_t offset, httplib::DataSink& sink) {
             for (int i = 0; i < bucket.size(); i++)
             {
-                sink.write("123", 3);
+                string message = bucket[i];
+                sink.write(message.c_str(), message.size());
             }
             sink.done(); // No more data
             return true; // return 'false' if you want to cancel the process.

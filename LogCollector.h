@@ -9,7 +9,7 @@ class LogCollector {
 private:
     int front, rear;
     int capacity;
-    vector<int> queue;
+    vector<string> queue;
 
     bool pause_;
     std::mutex mutex_;
@@ -22,7 +22,7 @@ public:
         pause_ = false;
     }
 
-    void enqueue(int item) {
+    void enqueue(string item) {
         if (pause_)
             return;
 
@@ -85,7 +85,7 @@ public:
         cout << endl;
     }
 
-    void fetch(std::vector<int>& bucket) {
+    void fetch(std::vector<string>& bucket) {
         pause_ = true;
         if (front == -1) {
  //           cout << "Queue is empty.\n";
