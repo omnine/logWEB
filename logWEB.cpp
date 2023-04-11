@@ -5,6 +5,12 @@
 
 #include "httplib.h"
 
+#include <jsoncons/json.hpp>
+#include <iostream>
+#include <cassert>
+
+using namespace jsoncons; // for convenience
+
 #include "LogCollector.h"
 
 int main()
@@ -34,6 +40,13 @@ int main()
         // The specified base directory doesn't exist...
     }
 
+    svr.Post("/recording", [](const httplib::Request& req, auto& res) {
+        string body = req.body;
+        json j = json::parse(body);
+        // we expect to see 3 filters, client IP, node, level
+        res.set_content("{\"error\": 0}", "application/json");
+    });
+
     svr.Get("/hi", [](const httplib::Request&, httplib::Response& res) {
         res.set_content("Hello World!", "text/plain");
     });
@@ -45,13 +58,14 @@ int main()
         res.set_chunked_content_provider(
             "text/html",
             [bucket](size_t offset, httplib::DataSink& sink) {
+            json logs(json_array_arg); // an empty array
             for (int i = 0; i < bucket.size(); i++)
             {
                 string message = bucket[i];
-                sink.write("<p>", 3);
-                sink.write(message.c_str(), message.size());
-                sink.write("</p>", 4);
+                logs.push_back(message);
             }
+            string logStr = logs.to_string();
+            sink.write(logStr.c_str(), logStr.size());
             sink.done(); // No more data
             return true; // return 'false' if you want to cancel the process.
         }

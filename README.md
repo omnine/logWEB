@@ -21,3 +21,4 @@
 ## Examples
 
 [How to Build a LitElement Application with Rollup.js and TypeScript](https://www.thisdot.co/blog/how-to-build-a-litelement-application-with-rollup-js-and-typescript)
+[Building your LitElement for production](https://10minute.tech/building-your-litelement-for-production/)
