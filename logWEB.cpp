@@ -40,9 +40,12 @@ int main()
         // The specified base directory doesn't exist...
     }
 
-    svr.Post("/recording", [](const httplib::Request& req, auto& res) {
+    svr.Post("/recording", [&](const httplib::Request& req, httplib::Response& res) {
         string body = req.body;
         json j = json::parse(body);
+        q.setFilters(j.get_value_or<string>("clientIP", ""),
+            j.get_value_or<string>("level", ""),
+            j.get_value_or<string>("node", ""));
         // we expect to see 3 filters, client IP, node, level
         res.set_content("{\"error\": 0}", "application/json");
     });

@@ -14,12 +14,24 @@ private:
     bool pause_;
     std::mutex mutex_;
 
+// filters
+    string clientIP_;
+    string level_;
+    string node_;
+
+
 public:
     LogCollector(int size) {
         front = rear = -1;
         capacity = size;
         queue.resize(capacity);
         pause_ = false;
+    }
+
+    void setFilters(string clientIP, string level,  string node) {
+        clientIP_ = clientIP;
+        level_ = level;
+        node_ = node;
     }
 
     void enqueue(string item) {
