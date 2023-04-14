@@ -50,6 +50,14 @@ int main()
         res.set_content("{\"error\": 0}", "application/json");
     });
 
+    svr.Post("/resize", [&](const httplib::Request& req, httplib::Response& res) {
+        string body = req.body;
+        json j = json::parse(body);
+        q.resize(j.get_value_or<int>("capacity", 2000));
+        // we expect to see 3 filters, client IP, node, level
+        res.set_content("{\"error\": 0}", "application/json");
+    });
+
     svr.Get("/hi", [](const httplib::Request&, httplib::Response& res) {
         res.set_content("Hello World!", "text/plain");
     });

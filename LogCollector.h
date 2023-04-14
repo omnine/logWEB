@@ -28,6 +28,18 @@ public:
         pause_ = false;
     }
 
+    // resize the capacity. we suggest 2000. If it is not enough, we can change it.
+    void resize(int size)
+    {
+        if (size < 200 || size > 10000)
+            return;
+
+        front = rear = -1;
+        capacity = size;
+        queue.resize(capacity);
+        pause_ = false;
+    }
+
     void setFilters(string clientIP, string level,  string node) {
         clientIP_ = clientIP;
         level_ = level;
